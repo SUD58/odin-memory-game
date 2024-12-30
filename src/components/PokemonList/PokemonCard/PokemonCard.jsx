@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 
 export function PokemonCard({
+	onClick,
 	bgColor,
 	textColor,
 	imgBgColor,
@@ -10,6 +11,7 @@ export function PokemonCard({
 }) {
 	return (
 		<li
+			onClick={onClick}
 			className={`p-4 rounded-lg gap-2 flex flex-col items-center ${bgColor} cursor-pointer ${shadowColor} hover:shadow-lg transition-all`}
 		>
 			<div
@@ -25,6 +27,7 @@ export function PokemonCard({
 }
 
 PokemonCard.propTypes = {
+	onClick: PropTypes.func.isRequired,
 	bgColor: PropTypes.string.isRequired,
 	textColor: PropTypes.string.isRequired,
 	pokeName: PropTypes.string.isRequired,

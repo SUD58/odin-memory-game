@@ -153,6 +153,13 @@ export function PokemonList() {
 							sprite: data.sprites.front_default || "",
 							type: data.types[0]?.type.name || "Unknown",
 						}))
+						.catch((error) => {
+							console.error(
+								`Error fetching details for Pokemon ${poke.name}:`,
+								error
+							);
+							return null; // Return null for errors
+						})
 				);
 
 				Promise.all(pokeData).then((detailedPokemon) => {
@@ -160,8 +167,27 @@ export function PokemonList() {
 					sessionStorage.setItem("pokemon", JSON.stringify(filteredPokemon)); // Save the entire array
 					setPokemon(filteredPokemon);
 				});
-			});
+			})
+			.catch((error) => console.error("Error fetching Pokemon list:", error));
 	}, []);
+
+	function shuffleCards() {
+		const shuffledCards = [...pokemon];
+		for (let i = shuffledCards.length - 1; i > 0; i--) {
+			// Generate random index
+			const j = Math.floor(Math.random() * (i + 1));
+
+			// Swap elements at indices i and j
+			const temp = shuffledCards[i];
+			shuffledCards[i] = shuffledCards[j];
+			shuffledCards[j] = temp;
+		}
+		setPokemon(shuffledCards);
+	}
+
+	useEffect(() => {
+		console.log(pokemon);
+	}, [pokemon]);
 
 	return (
 		<ul className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 place-items-stretch justify-center">
@@ -169,6 +195,7 @@ export function PokemonList() {
 				const { bg, text, imgBg, shadow } = getTypeStyles(poke.type);
 				return (
 					<PokemonCard
+						onClick={shuffleCards}
 						key={poke.id}
 						pokeName={poke.name}
 						pokeSprite={poke.sprite}
