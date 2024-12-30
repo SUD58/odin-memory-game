@@ -1,4 +1,5 @@
 import { PokemonList } from "./components/PokemonList/PokemonList";
+import odinProjectLogo from "./assets/odin-project-logo.png";
 
 function App() {
 	return (
@@ -11,11 +12,7 @@ function App() {
 						className="w-56"
 					/>
 					<i className="fa-2xl fa-solid fa-xmark"></i>
-					<img
-						src="./src/assets/odin-project-logo.png"
-						alt=""
-						className="w-20"
-					/>
+					<img src={odinProjectLogo} alt="" className="w-20" />
 				</div>
 				<h1 className="text-3xl font-bold">Pokemon Memory Game</h1>
 				<p>
