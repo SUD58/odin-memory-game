@@ -129,6 +129,12 @@ export function PokemonList() {
 	}
 
 	useEffect(() => {
+		const storedPokemon = sessionStorage.getItem("pokemon");
+		if (storedPokemon) {
+			setPokemon(JSON.parse(storedPokemon));
+			return;
+		}
+
 		fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
 			.then((response) => response.json())
 			.then((data) => {
@@ -147,20 +153,14 @@ export function PokemonList() {
 							sprite: data.sprites.front_default || "",
 							type: data.types[0]?.type.name || "Unknown",
 						}))
-						.catch((error) => {
-							console.error(
-								`Error fetching details for Pokemon ${poke.name}:`,
-								error
-							);
-							return null; // Return null for errors
-						})
 				);
 
-				Promise.all(pokeData).then(
-					(detailedPokemon) => setPokemon(detailedPokemon.filter(Boolean)) // Filter out null entries
-				);
-			})
-			.catch((error) => console.error("Error fetching Pokemon list:", error));
+				Promise.all(pokeData).then((detailedPokemon) => {
+					const filteredPokemon = detailedPokemon.filter(Boolean); // Filter out null entries
+					sessionStorage.setItem("pokemon", JSON.stringify(filteredPokemon)); // Save the entire array
+					setPokemon(filteredPokemon);
+				});
+			});
 	}, []);
 
 	return (
