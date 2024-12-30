@@ -3,16 +3,28 @@ import odinProjectLogo from "./assets/odin-project-logo.png";
 
 function App() {
 	return (
-		<div className="p-8 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-50 min-h-screen">
+		<div className="p-6 flex flex-col gap-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 min-h-screen">
 			<header>
 				<div className="flex items-center gap-4 justify-center">
-					<img
-						src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg"
-						alt=""
-						className="w-56"
-					/>
+					<a
+						href="https://pokeapi.co/"
+						className="hover:drop-shadow-lg transition-all dark:hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+						target="_blank"
+					>
+						<img
+							src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg"
+							alt=""
+							className="w-56"
+						/>
+					</a>
 					<i className="fa-2xl fa-solid fa-xmark"></i>
-					<img src={odinProjectLogo} alt="" className="w-20" />
+					<a
+						href="https://theodinproject.com"
+						className="hover:drop-shadow-lg transition-all dark:hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+						target="_blank"
+					>
+						<img src={odinProjectLogo} alt="" className="w-20" />
+					</a>
 				</div>
 				<h1 className="text-3xl font-bold">Pokemon Memory Game</h1>
 				<p>

@@ -10,7 +10,7 @@ export function PokemonCard({
 }) {
 	return (
 		<li
-			className={`p-4 rounded-lg gap-2 flex flex-col items-center ${bgColor} cursor-pointer ${shadowColor} hover:shadow-lg`}
+			className={`p-4 rounded-lg gap-2 flex flex-col items-center ${bgColor} cursor-pointer ${shadowColor} hover:shadow-lg transition-all`}
 		>
 			<div
 				className={`self-stretch flex justify-center rounded-lg ${imgBgColor}`}
