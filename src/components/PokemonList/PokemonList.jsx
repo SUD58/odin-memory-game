@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 export function PokemonList({ score, bestScore, setScore, setBestScore }) {
 	const [pokemon, setPokemon] = useState([]);
 	const [prevIds, setPrevIds] = useState([]);
+	const dialogRef = useRef(null);
 
 	const toTitleCase = (str) => {
 		return str.charAt(0).toUpperCase() + str.slice(1);
@@ -178,6 +179,7 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
 		if (prevIds.includes(id)) {
 			setScore(0);
 			setPrevIds([]);
+			dialogRef.current.showModal();
 		} else {
 			setScore(score + 1);
 			if (score >= bestScore) {
@@ -222,6 +224,25 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
 					);
 				})}
 			</ul>
+
+			<dialog
+				ref={dialogRef}
+				className="fixed rounded-lg p-8 inset-0 shadow-lg backdrop:bg-black backdrop:bg-opacity-75"
+			>
+				<div className="flex flex-col gap-4 justify-center items-center">
+					<div className="flex flex-col justify-center items-center gap-2 bg-white p-4 rounded-lg">
+						<h1 className="text-3xl font-bold text-red-500">Game over!</h1>
+						<p className="font-bold">You clicked the same pokemon twice!</p>
+					</div>
+					<button
+						autoFocus
+						onClick={() => dialogRef.current.close()}
+						className="px-4 py-2 bg-pokemon-blue text-white font-bold hover:bg-pokemon-blue-hover transition-colors rounded-lg"
+					>
+						Restart
+					</button>
+				</div>
+			</dialog>
 		</>
 	);
 }
