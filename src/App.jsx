@@ -5,7 +5,10 @@ import { useState } from "react";
 
 function App() {
 	const [score, setScore] = useState(0);
-	const [bestScore, setBestScore] = useState(0);
+	const [bestScore, setBestScore] = useState(() => {
+		const bestScore = localStorage.getItem("bestScore");
+		return bestScore ? parseInt(bestScore) : 0;
+	});
 
 	return (
 		<div className="p-6 flex flex-col gap-4 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 min-h-screen">
@@ -42,7 +45,12 @@ function App() {
 				<Score score={score} bestScore={bestScore} />
 			</div>
 
-			<PokemonList />
+			<PokemonList
+				score={score}
+				bestScore={bestScore}
+				setScore={setScore}
+				setBestScore={setBestScore}
+			/>
 
 			<footer className="text-center text-sm">
 				Created by{" "}

@@ -8,10 +8,11 @@ export function PokemonCard({
 	shadowColor,
 	pokeName,
 	pokeSprite,
+	pokeId,
 }) {
 	return (
 		<li
-			onClick={onClick}
+			onClick={() => onClick(pokeId)}
 			className={`p-4 rounded-lg gap-2 flex flex-col items-center ${bgColor} cursor-pointer ${shadowColor} hover:shadow-lg transition-all`}
 		>
 			<div

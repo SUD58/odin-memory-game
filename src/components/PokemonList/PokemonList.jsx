@@ -1,8 +1,10 @@
 import { PokemonCard } from "./PokemonCard/PokemonCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
 
-export function PokemonList() {
+export function PokemonList({ score, bestScore, setScore, setBestScore }) {
 	const [pokemon, setPokemon] = useState([]);
+	const [prevIds, setPrevIds] = useState([]);
 
 	const toTitleCase = (str) => {
 		return str.charAt(0).toUpperCase() + str.slice(1);
@@ -171,6 +173,21 @@ export function PokemonList() {
 			.catch((error) => console.error("Error fetching Pokemon list:", error));
 	}, []);
 
+	function handleClick(id) {
+		shuffleCards();
+		if (prevIds.includes(id)) {
+			setScore(0);
+			setPrevIds([]);
+		} else {
+			setScore(score + 1);
+			if (score >= bestScore) {
+				setBestScore(score + 1);
+				localStorage.setItem("bestScore", score + 1);
+			}
+			setPrevIds([...prevIds, id]);
+		}
+	}
+
 	function shuffleCards() {
 		const shuffledCards = [...pokemon];
 		for (let i = shuffledCards.length - 1; i > 0; i--) {
@@ -185,27 +202,33 @@ export function PokemonList() {
 		setPokemon(shuffledCards);
 	}
 
-	useEffect(() => {
-		console.log(pokemon);
-	}, [pokemon]);
-
 	return (
-		<ul className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 place-items-stretch justify-center">
-			{pokemon.map((poke) => {
-				const { bg, text, imgBg, shadow } = getTypeStyles(poke.type);
-				return (
-					<PokemonCard
-						onClick={shuffleCards}
-						key={poke.id}
-						pokeName={poke.name}
-						pokeSprite={poke.sprite}
-						bgColor={bg}
-						textColor={text}
-						imgBgColor={imgBg}
-						shadowColor={shadow}
-					/>
-				);
-			})}
-		</ul>
+		<>
+			<ul className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 place-items-stretch justify-center">
+				{pokemon.map((poke) => {
+					const { bg, text, imgBg, shadow } = getTypeStyles(poke.type);
+					return (
+						<PokemonCard
+							onClick={handleClick}
+							key={poke.id}
+							pokeId={poke.id}
+							pokeName={poke.name}
+							pokeSprite={poke.sprite}
+							bgColor={bg}
+							textColor={text}
+							imgBgColor={imgBg}
+							shadowColor={shadow}
+						/>
+					);
+				})}
+			</ul>
+		</>
 	);
 }
+
+PokemonList.propTypes = {
+	score: PropTypes.number.isRequired,
+	bestScore: PropTypes.number.isRequired,
+	setScore: PropTypes.func.isRequired,
+	setBestScore: PropTypes.func.isRequired,
+};

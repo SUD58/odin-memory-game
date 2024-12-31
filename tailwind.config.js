@@ -6,7 +6,10 @@ export default {
 			colors: {
 				pokemon: {
 					yellow: "hsl(48, 100%, 51%)",
-					blue: "hsl(212, 59%, 45%)",
+					blue: {
+						DEFAULT: "hsl(212, 59%, 45%)",
+						hover: "hsl(212, 59%, 55%)",
+					},
 				},
 			},
 		},
