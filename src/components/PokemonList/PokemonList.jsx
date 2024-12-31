@@ -318,7 +318,7 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
             onClick={() => winDialogRef.current.close()}
             className="rounded-lg bg-pokemon-blue px-4 py-2 font-bold text-white transition-colors hover:bg-pokemon-blue-hover"
           >
-            Restart
+            Play again
           </button>
         </div>
       </dialog>
