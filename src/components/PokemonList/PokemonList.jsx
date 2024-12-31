@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 export function PokemonList({ score, bestScore, setScore, setBestScore }) {
   const [pokemon, setPokemon] = useState([]);
   const [prevIds, setPrevIds] = useState([]);
-  const dialogRef = useRef(null);
+  const loseDialogRef = useRef(null);
+  const winDialogRef = useRef(null);
 
   const toTitleCase = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -222,20 +223,17 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
     return `${typeDescription} ${habitatDescription} ${shapeDescription} ${heightWeightDescription}`;
   }
 
-  useEffect(() => {
-    console.log(pokemon);
-  }, [pokemon]);
-
   function handleClick(event, id) {
     if (event.target.tagName === "BUTTON") {
       return;
     }
 
     shuffleCards();
+
     if (prevIds.includes(id)) {
       setScore(0);
       setPrevIds([]);
-      dialogRef.current.showModal();
+      loseDialogRef.current.showModal();
     } else {
       setScore(score + 1);
       if (score >= bestScore) {
@@ -243,6 +241,11 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
         localStorage.setItem("bestScore", score + 1);
       }
       setPrevIds([...prevIds, id]);
+      if (score + 1 === 11) {
+        setScore(0);
+        setPrevIds([]);
+        winDialogRef.current.showModal();
+      }
     }
   }
 
@@ -283,7 +286,7 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
       </ul>
 
       <dialog
-        ref={dialogRef}
+        ref={loseDialogRef}
         className="fixed inset-0 rounded-lg p-8 shadow-lg backdrop:bg-black backdrop:bg-opacity-75"
       >
         <div className="flex flex-col items-center justify-center gap-4">
@@ -293,7 +296,26 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
           </div>
           <button
             autoFocus
-            onClick={() => dialogRef.current.close()}
+            onClick={() => loseDialogRef.current.close()}
+            className="rounded-lg bg-pokemon-blue px-4 py-2 font-bold text-white transition-colors hover:bg-pokemon-blue-hover"
+          >
+            Restart
+          </button>
+        </div>
+      </dialog>
+
+      <dialog
+        ref={winDialogRef}
+        className="fixed inset-0 rounded-lg p-8 shadow-lg backdrop:bg-black backdrop:bg-opacity-75"
+      >
+        <div className="flex flex-col items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-2 rounded-lg bg-white p-4">
+            <h1 className="text-3xl font-bold text-red-500">You win!</h1>
+            <p className="font-bold">Congrats you have an awesome memory!</p>
+          </div>
+          <button
+            autoFocus
+            onClick={() => winDialogRef.current.close()}
             className="rounded-lg bg-pokemon-blue px-4 py-2 font-bold text-white transition-colors hover:bg-pokemon-blue-hover"
           >
             Restart
