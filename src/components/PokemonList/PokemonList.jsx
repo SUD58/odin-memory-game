@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 export function PokemonList({ score, bestScore, setScore, setBestScore }) {
   const [pokemon, setPokemon] = useState([]);
   const [prevIds, setPrevIds] = useState([]);
+  const [loading, setLoading] = useState(true);
   const loseDialogRef = useRef(null);
   const winDialogRef = useRef(null);
 
@@ -136,6 +137,7 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
     const storedPokemon = sessionStorage.getItem("pokemon");
     if (storedPokemon) {
       setPokemon(JSON.parse(storedPokemon));
+      setLoading(false);
       return;
     }
 
@@ -187,7 +189,8 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
                 error,
               );
               return null; // Return null for errors
-            }),
+            })
+            .finally(() => setLoading(false)),
         );
 
         Promise.all(pokeData)
@@ -261,6 +264,14 @@ export function PokemonList({ score, bestScore, setScore, setBestScore }) {
       shuffledCards[j] = temp;
     }
     setPokemon(shuffledCards);
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center">
+        <i className="fas fa-circle-notch fa-spin text-4xl text-pokemon-blue"></i>
+      </div>
+    );
   }
 
   return (
